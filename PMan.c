@@ -55,16 +55,13 @@ process_list_t *input_handle(char *input,process_list_t *p_list){
         index++;
     }
     
-    if (strcmp(flag,CMD_BG) == 0){
+    if ((strcmp(flag,CMD_BG) == 0) && (index != 0)){
         p_list = bg_entry(input_list,index,p_list);
-    }
-    else if(strcmp(flag,CMD_BGLIST) == 0){
+    } else if ((strcmp(flag, CMD_BGLIST) == 0) && (index == 0)) {
         bglist_entry(p_list);
-    }
-    else if(strcmp(flag,CMD_BGKILL) == 0 || strcmp(flag,CMD_BGSTOP) == 0 || strcmp(flag,CMD_BGCONT) == 0){
+    } else if ((strcmp(flag, CMD_BGKILL) == 0 || strcmp(flag, CMD_BGSTOP) == 0 || strcmp(flag, CMD_BGCONT) == 0) && (index == 1)) {
         p_list = bgsig_entry(p_list, input_list, flag);
-    }
-    else if (strcmp(flag, CMD_PSTAT) == 0){
+    } else if ((strcmp(flag, CMD_PSTAT) == 0) && (index == 1)) {
         char *str;
         pid_t pid;
         int found = 0;
@@ -76,11 +73,10 @@ process_list_t *input_handle(char *input,process_list_t *p_list){
         else{
             printf("Procces %d does not exist\n", pid);
         }
+    } else {
+        printf("%s: Please enter the command in correct format!\n",flag);
     }
-    else {
-        printf("%s: Command not found\n",flag);
-    }
-    
+
     return p_list;
 }
 
